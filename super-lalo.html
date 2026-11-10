@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Súper Lalo – Autoservice</title>
+<style>
+  :root{
+    --naranja:#e8762b; --naranja-osc:#c85e17; --verde:#1f3b2d; --crema:#fff7ee;
+    --tinta:#222; --gris:#6b6b6b; --radio:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tinta);background:var(--crema);line-height:1.5}
+  a{color:inherit}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 18px}
+
+  /* barra */
+  header{position:sticky;top:0;z-index:20;background:var(--verde);color:#fff;box-shadow:0 2px 10px #0003}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+  .logo{font-weight:800;font-size:1.2rem;letter-spacing:.3px}
+  .logo span{color:var(--naranja)}
+  nav a{text-decoration:none;margin-left:16px;font-size:.95rem;opacity:.9}
+  nav a:hover{opacity:1;color:var(--naranja)}
+  @media(max-width:560px){nav a.hide-m{display:none}}
+
+  /* hero */
+  .hero{background:linear-gradient(120deg,var(--naranja),#f29b52);color:#fff;padding:44px 0 36px}
+  .hero .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center}
+  @media(max-width:760px){.hero .wrap{grid-template-columns:1fr}}
+  .hero h1{font-size:clamp(2rem,6vw,3.2rem);line-height:1.05;margin-bottom:10px}
+  .hero p{font-size:1.1rem;margin-bottom:18px;max-width:34ch}
+  .estado{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--tinta);padding:8px 14px;border-radius:999px;font-weight:600;font-size:.95rem;margin-bottom:18px}
+  .dot{width:11px;height:11px;border-radius:50%;background:#999}
+  .dot.abierto{background:#1fa64a;box-shadow:0 0 0 4px #1fa64a33}
+  .dot.cerrado{background:#d33}
+  .botones{display:flex;flex-wrap:wrap;gap:10px}
+  .btn{display:inline-block;border:0;cursor:pointer;text-decoration:none;font:inherit;font-weight:700;padding:12px 20px;border-radius:999px;background:var(--verde);color:#fff;transition:transform .15s,background .15s}
+  .btn:hover{transform:translateY(-2px);background:#14281e}
+  .btn.claro{background:#fff;color:var(--verde)}
+  .btn.claro:hover{background:#fff3e6}
+  .foto{border-radius:var(--radio);overflow:hidden;box-shadow:0 12px 30px #0004;background:var(--verde);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center}
+  .foto img{width:100%;height:100%;object-fit:cover;display:block}
+  .foto .vacio{padding:20px;font-size:.9rem}
+
+  section{padding:46px 0}
+  h2{font-size:1.7rem;color:var(--verde);margin-bottom:6px}
+  .sub{color:var(--gris);margin-bottom:22px}
+
+  /* categorias */
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .tab{border:2px solid var(--naranja);background:transparent;color:var(--naranja-osc);font:inherit;font-weight:700;padding:7px 15px;border-radius:999px;cursor:pointer}
+  .tab.activo,.tab:hover{background:var(--naranja);color:#fff}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+  .item{background:#fff;border-radius:var(--radio);padding:16px;box-shadow:0 3px 12px #0001;display:flex;flex-direction:column;gap:8px}
+  .item .emoji{font-size:2rem}
+  .item h3{font-size:1.05rem}
+  .item small{color:var(--gris)}
+  .item button{margin-top:auto;border:2px solid var(--verde);background:transparent;color:var(--verde);font:inherit;font-weight:700;padding:7px;border-radius:10px;cursor:pointer}
+  .item button:hover{background:var(--verde);color:#fff}
+  .item.oculto{display:none}
+
+  /* lista */
+  .lista{margin-top:26px;background:var(--verde);color:#fff;border-radius:var(--radio);padding:20px}
+  .lista h3{margin-bottom:10px}
+  .lista ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  .lista li{display:flex;justify-content:space-between;align-items:center;background:#ffffff1a;padding:8px 12px;border-radius:10px}
+  .lista li button{background:none;border:0;color:#ffb98a;cursor:pointer;font-size:1.1rem}
+  .lista .vacia{opacity:.75;font-style:italic}
+  .fila{display:flex;flex-wrap:wrap;gap:10px}
+
+  /* ubicacion */
+  .ubi{display:grid;grid-template-columns:1fr 1.3fr;gap:22px}
+  @media(max-width:760px){.ubi{grid-template-columns:1fr}}
+  .tarjeta{background:#fff;border-radius:var(--radio);padding:22px;box-shadow:0 3px 12px #0001}
+  .tarjeta p{margin-bottom:10px}
+  .horario{width:100%;border-collapse:collapse;margin:6px 0 14px}
+  .horario td{padding:6px 0;border-bottom:1px dashed #ddd}
+  .horario tr.hoy{font-weight:800;color:var(--naranja-osc)}
+  .horario td:last-child{text-align:right}
+  iframe{width:100%;height:100%;min-height:340px;border:0;border-radius:var(--radio);box-shadow:0 3px 12px #0002}
+
+  footer{background:var(--verde);color:#fff;text-align:center;padding:22px 0;font-size:.9rem}
+  #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(80px);background:#222;color:#fff;padding:10px 18px;border-radius:999px;transition:transform .3s;z-index:50}
+  #toast.ver{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">Súper <span>Lalo</span></div>
+    <nav>
+      <a href="#productos" class="hide-m">Productos</a>
+      <a href="#ubicacion">Ubicación</a>
+      <a href="https://www.instagram.com/autoservice_superlalo/" target="_blank" rel="noopener">Instagram</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <div class="estado"><span class="dot" id="dot"></span><span id="estadoTxt">Calculando horario…</span></div>
+      <h1>Tu autoservice de siempre, cerca de casa.</h1>
+      <p>Almacén, frescos, pan, bebidas y más. Pagá con tarjeta de crédito o débito.</p>
+      <div class="botones">
+        <a class="btn" href="#ubicacion">📍 Cómo llegar</a>
+        <a class="btn claro" href="https://www.instagram.com/autoservice_superlalo/" target="_blank" rel="noopener">📸 Seguinos en Instagram</a>
+      </div>
+    </div>
+    <div class="foto">
+      <img src="fachada.jpg" alt="Fachada de Súper Lalo" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'vacio',textContent:'Guardá la foto del local como fachada.jpg junto a este archivo para verla acá.'}))">
+    </div>
+  </div>
+</div>
+
+<section id="productos">
+  <div class="wrap">
+    <h2>Qué encontrás en el local</h2>
+    <p class="sub">Filtrá por rubro y armá tu lista antes de venir.</p>
+
+    <div class="tabs" id="tabs">
+      <button class="tab activo" data-cat="todos">Todos</button>
+      <button class="tab" data-cat="almacen">Almacén</button>
+      <button class="tab" data-cat="frescos">Frescos</button>
+      <button class="tab" data-cat="bebidas">Bebidas</button>
+      <button class="tab" data-cat="dulce">Confitería y café</button>
+      <button class="tab" data-cat="limpieza">Limpieza</button>
+    </div>
+
+    <div class="grid" id="grid">
+      <div class="item" data-cat="almacen"><div class="emoji">🛒</div><h3>Almacén</h3><small>Productos de almacén de todos los días.</small><button>+ Agregar a mi lista</button></div>
+      <div class="item" data-cat="frescos"><div class="emoji">🧀</div><h3>Fiambres</h3><small>Fiambres y quesos.</small><button>+ Agregar a mi lista</button></div>
+      <div class="item" data-cat="frescos"><div class="emoji">🥖</div><h3>Pan</h3><small>Pan para el día.</small><button>+ Agregar a mi lista</button></div>
+      <div class="item" data-cat="frescos"><div class="emoji">🥛</div><h3>Lácteos</h3><small>Leche, yogur y más.</small><button>+ Agregar a mi lista</button></div>
+      <div class="item" data-cat="frescos"><div class="emoji">🥬</div><h3>Frescos</h3><small>Productos frescos.</small><button>+ Agregar a mi lista</button></div>
+      <div class="item" data-cat="bebidas"><div class="emoji">🥤</div><h3>Bebidas en general</h3><small>Gaseosas, aguas y más.</small><button>+ Agregar a mi lista</button></div>
+      <div class="item" data-cat="dulce"><div class="emoji">🍬</div><h3>Confitería</h3><small>Golosinas y snacks.</small><button>+ Agregar a mi lista</button></div>
+      <div class="item" data-cat="dulce"><div class="emoji">☕</div><h3>Café</h3><small>Para arrancar el día.</small><button>+ Agregar a mi lista</button></div>
+      <div class="item" data-cat="almacen"><div class="emoji">🌾</div><h3>Harina</h3><small>Para tus recetas.</small><button>+ Agregar a mi lista</button></div>
+      <div class="item" data-cat="limpieza"><div class="emoji">🧴</div><h3>Artículos de limpieza</h3><small>Para el hogar.</small><button>+ Agregar a mi lista</button></div>
+    </div>
+
+    <div class="lista">
+      <h3>🧾 Mi lista de compras</h3>
+      <ul id="lista"><li class="vacia">Todavía no agregaste nada.</li></ul>
+      <div class="fila">
+        <button class="btn claro" id="copiar">Copiar lista</button>
+        <button class="btn claro" id="vaciar">Vaciar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ubicacion" style="background:#fff0e0">
+  <div class="wrap">
+    <h2>Dónde estamos</h2>
+    <p class="sub">Camino Capitán Mateo Tula Dufort, Montevideo.</p>
+    <div class="ubi">
+      <div class="tarjeta">
+        <p><strong>📍 Dirección</strong><br>Cno. Capitán Mateo Tula Dufort<br>12300 Montevideo, Uruguay<br><small>Código Plus: 5RGQ+XPV</small></p>
+        <p><strong>🕒 Horario</strong></p>
+        <table class="horario" id="horario"></table>
+        <div class="fila">
+          <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=5RGQ%2BXPV%20Montevideo%20Uruguay">Abrir en Google Maps</a>
+          <button class="btn claro" id="copiarDir" style="border:2px solid var(--verde)">Copiar dirección</button>
+        </div>
+      </div>
+      <iframe loading="lazy" title="Mapa de Súper Lalo" allowfullscreen
+        src="https://www.google.com/maps?q=5RGQ%2BXPV%20Montevideo%20Uruguay&output=embed"></iframe>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Súper Lalo · Autoservice · <a href="https://www.instagram.com/autoservice_superlalo/" target="_blank" rel="noopener">@autoservice_superlalo</a>
+  </div>
+</footer>
+<div id="toast"></div>
+
+<script>
+(function(){
+  // ---- Horario: 7:30 a 22:00, hora de Montevideo ----
+  var ABRE = 7*60+30, CIERRA = 22*60;
+  var dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+
+  function ahoraMVD(){
+    var p = new Intl.DateTimeFormat('en-US',{timeZone:'America/Montevideo',hour:'numeric',minute:'numeric',hour12:false,weekday:'short'}).formatToParts(new Date());
+    var o = {}; p.forEach(function(x){o[x.type]=x.value});
+    var map = {Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+    return {dia:map[o.weekday], min:(parseInt(o.hour,10)%24)*60+parseInt(o.minute,10)};
+  }
+  function pintarEstado(){
+    var t = ahoraMVD(), abierto = t.min>=ABRE && t.min<CIERRA;
+    document.getElementById('dot').className = 'dot '+(abierto?'abierto':'cerrado');
+    var txt;
+    if(abierto){
+      var falta = CIERRA - t.min;
+      txt = 'Abierto ahora · cierra a las 22:00' + (falta<=60 ? ' (en '+falta+' min)' : '');
+    } else {
+      txt = 'Cerrado ahora · abre a las 7:30';
+    }
+    document.getElementById('estadoTxt').textContent = txt;
+    var hoy = t.dia, h = '';
+    for(var i=0;i<7;i++){
+      h += '<tr'+(i===hoy?' class="hoy"':'')+'><td>'+dias[i]+(i===hoy?' (hoy)':'')+'</td><td>7:30 a 22:00</td></tr>';
+    }
+    document.getElementById('horario').innerHTML = h;
+  }
+  pintarEstado(); setInterval(pintarEstado, 60000);
+
+  // ---- Filtro de categorías ----
+  var tabs = document.querySelectorAll('.tab'), items = document.querySelectorAll('.item');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){t.classList.remove('activo')});
+      tab.classList.add('activo');
+      var c = tab.dataset.cat;
+      items.forEach(function(it){ it.classList.toggle('oculto', c!=='todos' && it.dataset.cat!==c); });
+    });
+  });
+
+  // ---- Lista de compras ----
+  var lista = [];
+  try{ lista = JSON.parse(localStorage.getItem('lalo_lista')||'[]'); }catch(e){}
+  var ul = document.getElementById('lista');
+  function guardar(){ try{ localStorage.setItem('lalo_lista', JSON.stringify(lista)); }catch(e){} }
+  function render(){
+    if(!lista.length){ ul.innerHTML = '<li class="vacia">Todavía no agregaste nada.</li>'; return; }
+    ul.innerHTML = '';
+    lista.forEach(function(nombre,i){
+      var li = document.createElement('li');
+      li.appendChild(document.createTextNode(nombre));
+      var b = document.createElement('button'); b.textContent='✕'; b.title='Quitar';
+      b.onclick = function(){ lista.splice(i,1); guardar(); render(); };
+      li.appendChild(b); ul.appendChild(li);
+    });
+  }
+  items.forEach(function(it){
+    it.querySelector('button').addEventListener('click', function(){
+      var n = it.querySelector('h3').textContent;
+      if(lista.indexOf(n)===-1){ lista.push(n); guardar(); render(); toast('Agregado: '+n); }
+      else toast('Ya está en tu lista');
+    });
+  });
+  render();
+
+  function copiar(texto, ok){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(texto).then(function(){toast(ok)},function(){toast('No se pudo copiar')});
+    } else {
+      var ta = document.createElement('textarea'); ta.value = texto; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); toast(ok); }catch(e){ toast('No se pudo copiar'); }
+      ta.remove();
+    }
+  }
+  document.getElementById('copiar').onclick = function(){
+    if(!lista.length) return toast('Tu lista está vacía');
+    copiar('Lista de compras – Súper Lalo\n'+lista.map(function(x){return '• '+x}).join('\n'), 'Lista copiada');
+  };
+  document.getElementById('vaciar').onclick = function(){ lista=[]; guardar(); render(); toast('Lista vaciada'); };
+  document.getElementById('copiarDir').onclick = function(){
+    copiar('Súper Lalo, Cno. Capitán Mateo Tula Dufort, 12300 Montevideo, Uruguay (5RGQ+XPV)', 'Dirección copiada');
+  };
+
+  // ---- Aviso ----
+  var tt;
+  function toast(m){
+    var el = document.getElementById('toast'); el.textContent = m; el.classList.add('ver');
+    clearTimeout(tt); tt = setTimeout(function(){el.classList.remove('ver')}, 2000);
+  }
+})();
+</script>
+</body>
+</html>
